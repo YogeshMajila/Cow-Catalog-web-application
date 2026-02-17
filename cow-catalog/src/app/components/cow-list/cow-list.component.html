@@ -1,0 +1,79 @@
+<div class="list-page">
+  <!-- Header -->
+  <header class="page-header">
+    <div class="header-left">
+      <h1>🐄 Cow Catalog</h1>
+      <span class="cow-count">{{ cows.length }} cow{{ cows.length !== 1 ? 's' : '' }}</span>
+    </div>
+    <button class="btn btn-primary" (click)="addCow()">+ Add Cow</button>
+  </header>
+
+  <!-- Filters -->
+  <section class="filters-bar">
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Search by ear tag…"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearch()"
+      />
+    </div>
+
+    <select [(ngModel)]="statusFilter" (ngModelChange)="onStatusChange()">
+      <option value="">All Statuses</option>
+      @for (s of statuses; track s) {
+        <option [value]="s">{{ s }}</option>
+      }
+    </select>
+
+    <select [(ngModel)]="penFilter" (ngModelChange)="onPenChange()">
+      <option value="">All Pens</option>
+      @for (p of pens; track p) {
+        <option [value]="p">{{ p }}</option>
+      }
+    </select>
+
+    @if (searchTerm || statusFilter || penFilter) {
+      <button class="btn btn-ghost" (click)="clearFilters()">Clear</button>
+    }
+  </section>
+
+  <!-- Table -->
+  @if (cows.length) {
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Ear Tag</th>
+            <th>Sex</th>
+            <th>Pen</th>
+            <th>Status</th>
+            <th>Last Event</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (cow of cows; track cow.earTag) {
+            <tr (click)="viewCow(cow)">
+              <td class="tag-cell">{{ cow.earTag }}</td>
+              <td>{{ cow.sex }}</td>
+              <td>{{ cow.pen }}</td>
+              <td>
+                <span class="status-badge" [ngClass]="getStatusClass(cow.status)">
+                  {{ cow.status }}
+                </span>
+              </td>
+              <td class="date-cell">
+                {{ getLastEventDate(cow) ? (getLastEventDate(cow) | date:'mediumDate') : '—' }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <p>No cows match your search criteria.</p>
+      <button class="btn btn-primary" (click)="clearFilters()">Clear Filters</button>
+    </div>
+  }
+</div>

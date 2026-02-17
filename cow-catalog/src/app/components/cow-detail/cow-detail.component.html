@@ -1,0 +1,58 @@
+@if (cow) {
+<div class="detail-page">
+    <!-- Back -->
+    <button class="btn btn-back" (click)="goBack()">← Back to List</button>
+
+    <!-- Info Card -->
+    <div class="info-card">
+        <div class="info-header">
+            <h1>{{ cow.earTag }}</h1>
+            <span class="status-badge" [ngClass]="getStatusClass(cow.status)">
+                {{ cow.status }}
+            </span>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <span class="label">Sex</span>
+                <span class="value">{{ cow.sex }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Pen</span>
+                <span class="value">{{ cow.pen }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Weight</span>
+                <span class="value">{{ cow.weight ? cow.weight + ' kg' : '—' }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Daily Weight Gain</span>
+                <span class="value">{{ cow.dailyWeightGain ? cow.dailyWeightGain + ' kg/day' : '—' }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-section">
+        <h2>Event Timeline</h2>
+
+        @if (sortedEvents.length) {
+        <div class="timeline">
+            @for (event of sortedEvents; track event.id) {
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-meta">
+                        <span class="event-type">{{ event.type }}</span>
+                        <span class="event-date">{{ event.date | date:'mediumDate' }}</span>
+                    </div>
+                    <p class="event-desc">{{ event.description }}</p>
+                </div>
+            </div>
+            }
+        </div>
+        } @else {
+        <p class="no-events">No events recorded for this cow.</p>
+        }
+    </div>
+</div>
+}

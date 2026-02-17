@@ -1,0 +1,68 @@
+<div class="form-page">
+    <button class="btn btn-back" (click)="cancel()">← Back to List</button>
+
+    <div class="form-card">
+        <h1>Add New Cow</h1>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <!-- Ear Tag -->
+            <div class="field">
+                <label for="earTag">Ear Tag *</label>
+                <input id="earTag" type="text" formControlName="earTag" placeholder="e.g. TAG-2001" />
+                @if (isInvalid('earTag')) {
+                <span class="error">Ear tag is required.</span>
+                }
+                @if (tagError) {
+                <span class="error">{{ tagError }}</span>
+                }
+            </div>
+
+            <!-- Sex -->
+            <div class="field">
+                <label for="sex">Sex *</label>
+                <select id="sex" formControlName="sex">
+                    <option value="" disabled>Select sex</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+                @if (isInvalid('sex')) {
+                <span class="error">Sex is required.</span>
+                }
+            </div>
+
+            <!-- Pen -->
+            <div class="field">
+                <label for="pen">Pen *</label>
+                <input id="pen" type="text" formControlName="pen" placeholder="e.g. Pen A" />
+                @if (isInvalid('pen')) {
+                <span class="error">Pen is required.</span>
+                }
+            </div>
+
+            <!-- Status -->
+            <div class="field">
+                <label for="status">Status *</label>
+                <select id="status" formControlName="status">
+                    <option value="Active">Active</option>
+                    <option value="In Treatment">In Treatment</option>
+                    <option value="Deceased">Deceased</option>
+                </select>
+            </div>
+
+            <!-- Weight -->
+            <div class="field">
+                <label for="weight">Weight (kg)</label>
+                <input id="weight" type="number" formControlName="weight" placeholder="Optional" />
+                @if (isInvalid('weight')) {
+                <span class="error">Weight must be a positive number.</span>
+                }
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Cow</button>
+            </div>
+        </form>
+    </div>
+</div>
