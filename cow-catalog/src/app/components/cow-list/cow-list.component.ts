@@ -21,6 +21,10 @@ export class CowListComponent implements OnInit, OnDestroy {
     pens: string[] = [];
     statuses = ['Active', 'In Treatment', 'Deceased'];
 
+    // Pagination
+    currentPage = 1;
+    pageSize = 5;
+
     private sub!: Subscription;
     private filterSub!: Subscription;
 
@@ -37,6 +41,8 @@ export class CowListComponent implements OnInit, OnDestroy {
 
         this.sub = this.cowService.filteredCows$.subscribe(cows => {
             this.cows = cows;
+            // Reset to page 1 when filtered results change
+            this.currentPage = 1;
         });
 
         // Update unique pen list whenever data changes
@@ -92,5 +98,26 @@ export class CowListComponent implements OnInit, OnDestroy {
             case 'Deceased': return 'status-deceased';
             default: return '';
         }
+    }
+
+    // ---- Pagination ----
+
+    get totalPages(): number {
+        return Math.ceil(this.cows.length / this.pageSize);
+    }
+
+    get paginatedCows(): Cow[] {
+        const start = (this.currentPage - 1) * this.pageSize;
+        return this.cows.slice(start, start + this.pageSize);
+    }
+
+    goToPage(page: number): void {
+        if (page >= 1 && page <= this.totalPages) {
+            this.currentPage = page;
+        }
+    }
+
+    get pages(): number[] {
+        return Array.from({ length: this.totalPages }, (_, i) => i + 1);
     }
 }

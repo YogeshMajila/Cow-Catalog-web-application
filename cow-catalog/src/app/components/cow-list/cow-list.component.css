@@ -199,6 +199,43 @@ tbody tr:hover {
   font-size: 1rem;
 }
 
+/* ---- Pagination ---- */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.page-btn {
+  border: 1px solid #e0e0e8;
+  background: #fff;
+  color: #555;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.page-btn:hover:not(:disabled) {
+  background: #f0f0f5;
+  border-color: #ccc;
+}
+
+.page-btn.active {
+  background: #4361ee;
+  color: #fff;
+  border-color: #4361ee;
+}
+
+.page-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 640px) {
   .page-header {
@@ -215,7 +252,8 @@ tbody tr:hover {
     min-width: 100%;
   }
 
-  th, td {
+  th,
+  td {
     padding: 10px 12px;
     font-size: 0.82rem;
   }

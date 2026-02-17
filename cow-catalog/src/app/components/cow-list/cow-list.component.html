@@ -11,69 +11,75 @@
   <!-- Filters -->
   <section class="filters-bar">
     <div class="search-box">
-      <input
-        type="text"
-        placeholder="Search by ear tag…"
-        [(ngModel)]="searchTerm"
-        (ngModelChange)="onSearch()"
-      />
+      <input type="text" placeholder="Search by ear tag…" [(ngModel)]="searchTerm" (ngModelChange)="onSearch()" />
     </div>
 
     <select [(ngModel)]="statusFilter" (ngModelChange)="onStatusChange()">
       <option value="">All Statuses</option>
       @for (s of statuses; track s) {
-        <option [value]="s">{{ s }}</option>
+      <option [value]="s">{{ s }}</option>
       }
     </select>
 
     <select [(ngModel)]="penFilter" (ngModelChange)="onPenChange()">
       <option value="">All Pens</option>
       @for (p of pens; track p) {
-        <option [value]="p">{{ p }}</option>
+      <option [value]="p">{{ p }}</option>
       }
     </select>
 
     @if (searchTerm || statusFilter || penFilter) {
-      <button class="btn btn-ghost" (click)="clearFilters()">Clear</button>
+    <button class="btn btn-ghost" (click)="clearFilters()">Clear</button>
     }
   </section>
 
   <!-- Table -->
   @if (cows.length) {
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Ear Tag</th>
-            <th>Sex</th>
-            <th>Pen</th>
-            <th>Status</th>
-            <th>Last Event</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (cow of cows; track cow.earTag) {
-            <tr (click)="viewCow(cow)">
-              <td class="tag-cell">{{ cow.earTag }}</td>
-              <td>{{ cow.sex }}</td>
-              <td>{{ cow.pen }}</td>
-              <td>
-                <span class="status-badge" [ngClass]="getStatusClass(cow.status)">
-                  {{ cow.status }}
-                </span>
-              </td>
-              <td class="date-cell">
-                {{ getLastEventDate(cow) ? (getLastEventDate(cow) | date:'mediumDate') : '—' }}
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Ear Tag</th>
+          <th>Sex</th>
+          <th>Pen</th>
+          <th>Status</th>
+          <th>Last Event</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cow of paginatedCows; track cow.earTag) {
+        <tr (click)="viewCow(cow)">
+          <td class="tag-cell">{{ cow.earTag }}</td>
+          <td>{{ cow.sex }}</td>
+          <td>{{ cow.pen }}</td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(cow.status)">
+              {{ cow.status }}
+            </span>
+          </td>
+          <td class="date-cell">
+            {{ getLastEventDate(cow) ? (getLastEventDate(cow) | date:'mediumDate') : '—' }}
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  @if (totalPages > 1) {
+  <div class="pagination">
+    <button class="page-btn" [disabled]="currentPage === 1" (click)="goToPage(currentPage - 1)">‹ Prev</button>
+    @for (p of pages; track p) {
+    <button class="page-btn" [class.active]="p === currentPage" (click)="goToPage(p)">{{ p }}</button>
+    }
+    <button class="page-btn" [disabled]="currentPage === totalPages" (click)="goToPage(currentPage + 1)">Next ›</button>
+  </div>
+  }
   } @else {
-    <div class="empty-state">
-      <p>No cows match your search criteria.</p>
-      <button class="btn btn-primary" (click)="clearFilters()">Clear Filters</button>
-    </div>
+  <div class="empty-state">
+    <p>No cows match your search criteria.</p>
+    <button class="btn btn-primary" (click)="clearFilters()">Clear Filters</button>
+  </div>
   }
 </div>
